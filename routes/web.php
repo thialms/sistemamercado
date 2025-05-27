@@ -11,6 +11,13 @@ Route::get('/home', function () {
     return view('home');
 })->name('home');
 
+Route::get('/vendas', function () {
+    if (!session('logado')) {
+        return redirect()->route('login');
+    }
+    return view('vendas');
+})->name('vendas');
+
 Route::controller(LoginController::class)->group(function(){
     Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'store'])->name('login.store');
