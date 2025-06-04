@@ -23,3 +23,18 @@ Route::controller(LoginController::class)->group(function(){
     Route::post('/login', [LoginController::class, 'store'])->name('login.store');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
+
+
+Route::get('/carrinho/adicionar', function () {
+    if (!session('logado')) {
+        return redirect()->route('login');
+    }
+    return app(\App\Http\Controllers\CartController::class)->index();
+})->name('addProdutoCarrinho');
+
+Route::get('/scan', function () {
+    if (!session('logado')) {
+        return redirect()->route('login');
+    }
+    return view('scan'); 
+})->name('scan');

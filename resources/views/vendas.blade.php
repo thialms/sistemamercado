@@ -15,7 +15,7 @@
             </button>
         </a>
         <h2 class="text-2xl font-bold text-white font-jost">Nova Venda</h2>
-        <a href="">
+        <a href="{{ route('addProdutoCarrinho') }}">
             {{-- Add pagina para ter a pesquisa e leitura de codigo de barras para add os produtos no carrinho --}}
             <button class="bg-blue-900 hover:bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-3xl shadow-md transition">
                 <span>+</span>

@@ -7,6 +7,8 @@
 
 <div id="appTheme" class="min-h-screen bg-[#030e1a] flex transition-colors duration-300">
 
+    {{-- Adicionar os dashboards para os dados que aparecem --}}
+
     <aside id="sidebar" class="fixed md:static top-0 left-0 min-h-screen w-90
      bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col justify-between py-8 px-6 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
         <button id="sidebarClose" class="absolute top-4 right-4 bg-blue-800 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg focus:outline-none md:hidden">
@@ -21,6 +23,7 @@
             </div>
             <nav>
                 <ul class="space-y-4">
+                    {{-- Conferir se tera mais opçoes, ver como fazer o sistema para as opcoes so aparecerem ao clicar em abrir caixa, criar a view do historico de comprar e do menu de fiados --}}
                     <li>
                         <a href="{{ route('vendas') }}" class="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:bg-blue-50 hover:dark:bg-gray-800 hover:text-blue-800 hover:dark:text-blue-400 rounded-lg px-4 py-2 transition-colors text-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -34,7 +37,15 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19V6M6 19v-4M16 19v-2M21 19V9" />
                             </svg>
-                            Relatório de vendas
+                            Histórico de vendas
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:bg-blue-50 hover:dark:bg-gray-800 hover:text-blue-800 hover:dark:text-blue-400 rounded-lg px-4 py-2 transition-colors text-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a5 5 0 00-10 0v2M5 9h14a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2zm7 4v2m0 0h-2m2 0h2" />
+                            </svg>
+                            Menu de fiados
                         </a>
                     </li>
                 </ul>
