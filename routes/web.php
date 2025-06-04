@@ -21,5 +21,5 @@ Route::get('/vendas', function () {
 Route::controller(LoginController::class)->group(function(){
     Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'store'])->name('login.store');
-    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

@@ -30,9 +30,12 @@ class LoginController extends Controller
         }
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        Session::forget('logado');
+        auth()->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        $request->session()->flush();
         return redirect()->route('login');
     }
 }
