@@ -35,12 +35,12 @@
         <div class="relative mt-2">
             <label for="email" class="px-5 text-base font-jost text-white">Usuário</label>
             <input type="text" id="user" name="email" required
-                class="w-full px-4 py-2 border border-blue-800 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-800 text-base font-jost" />
+                class="w-full bg-gray-300 px-4 py-2 border border-blue-800 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-800 text-base font-jost" />
         </div>
         <div class="relative mt-2">
             <label for="password" class="px-5 text-base font-jost text-white">Senha</label>
             <input type="password" id="password" name="password" required
-                class="w-full px-4 py-2 border border-blue-800 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-800 text-base font-jost" />
+                class="w-full bg-gray-300 px-4 py-2 border border-blue-800 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-800 text-base font-jost" />
                 @error('password')
                 <span class="text-red-500 text-sm font-jost">{{ $message }}</span>
                 @enderror

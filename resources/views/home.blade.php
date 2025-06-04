@@ -7,7 +7,8 @@
 
 <div id="appTheme" class="min-h-screen bg-[#030e1a] flex transition-colors duration-300">
 
-    <aside id="sidebar" class="fixed md:static top-0 left-0 min-h-screen w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col justify-between py-8 px-6 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+    <aside id="sidebar" class="fixed md:static top-0 left-0 min-h-screen w-90
+     bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col justify-between py-8 px-6 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
         <button id="sidebarClose" class="absolute top-4 right-4 bg-blue-800 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg focus:outline-none md:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -18,8 +19,6 @@
                 <span class="text-2xl font-bold tracking-tight text-black dark:text-white font-jost block leading-tight">Mercado do</span>
                 <span class="text-3xl font-bold text-blue-800 dark:text-blue-400 font-jost block -mt-2">Fernando</span>
             </div>
-            {{-- Add mais opcoes na sidebar, menu de fiados? talvez --}}
-            {{-- Um menu de historico de compras seria legal --}}
             <nav>
                 <ul class="space-y-4">
                     <li>
@@ -56,7 +55,7 @@
 
     <div id="sidebarOverlay" class="fixed inset-0 bg-black/30 z-30 hidden md:hidden pointer-events-none transition-opacity duration-300"></div>
 
-    <main class="flex-1 p-4 sm:p-8 space-y-8 overflow-y-auto md:ml-64 transition-colors duration-300">
+    <main class="flex-1 p-4 sm:p-8 space-y-8 overflow-y-auto transition-colors duration-300">
         <div class="flex mb-6 items-center justify-end relative">
             <button id="sidebarToggle" class="absolute left-0 md:hidden bg-blue-800 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg focus:outline-none">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -65,8 +64,7 @@
             </button>
             <h1 class="text-2xl font-bold text-blue-900 dark:text-blue-200 w-full text-right md:text-right">Dashboard</h1>
         </div>
-        {{-- Adicionar mais informacoes para o dono do comercio, talvez alguns graficos das informacoes que ja coloquei de exemplo, como um grafico de fluxo de pessoas por dia ou algo assim --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
             <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow flex flex-col">
                 <span class="text-gray-400 dark:text-gray-300 text-sm">Ganhos do dia</span>
                 <span class="text-2xl font-bold text-blue-900 dark:text-blue-200">R$ 354,99 <span class="text-green-500 text-sm">+15%</span></span>
