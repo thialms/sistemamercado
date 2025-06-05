@@ -19,7 +19,7 @@ Route::get('/vendas', function () {
 })->name('vendas');
 
 Route::controller(LoginController::class)->group(function(){
-    Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'store'])->name('login.store');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
