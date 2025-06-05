@@ -63,7 +63,7 @@
             Quagga.onDetected(function (result) {
                 let code = result.codeResult.code;
                 document.getElementById('barcode-result').textContent = code;
-                // logica do back para adicionar o produto ao carrinho
+                alert('Código detectado: ' + code);
             });
         } else {
             alert("Acesso à câmera não suportado.");
