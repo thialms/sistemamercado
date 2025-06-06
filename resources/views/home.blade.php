@@ -11,7 +11,7 @@
 
     <aside id="sidebar" class="fixed md:static top-0 left-0 min-h-screen w-90
      bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col justify-between py-8 px-6 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
-        <button id="sidebarClose" class="absolute top-4 right-4 bg-blue-800 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg focus:outline-none md:hidden">
+        <button id="sidebarClose" class="cursor-pointer absolute top-4 right-4 bg-blue-800 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg focus:outline-none md:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -54,11 +54,11 @@
         <div class="flex flex-col gap-2 w-full">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="bg-red-900 hover:bg-red-600 text-white font-bold rounded-full px-4 py-2 w-full transition-colors">
+                <button type="submit" class="cursor-pointer bg-red-900 hover:bg-red-600 text-white font-bold rounded-full px-4 py-2 w-full transition-colors">
                     Finalizar Sessão
                 </button>
             </form>
-            <button class="bg-blue-900 hover:bg-blue-600 text-white font-bold rounded-full px-4 py-2 w-full transition-colors">
+            <button class="cursor-pointer bg-blue-900 hover:bg-blue-600 text-white font-bold rounded-full px-4 py-2 w-full transition-colors">
                 Precisa de Ajuda?
             </button>
         </div>
@@ -68,7 +68,7 @@
 
     <main class="flex-1 p-4 sm:p-8 space-y-8 overflow-y-auto transition-colors duration-300">
         <div class="flex mb-6 items-center justify-end relative">
-            <button id="sidebarToggle" class="absolute left-0 md:hidden bg-blue-800 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg focus:outline-none">
+            <button id="sidebarToggle" class="cursor-pointer absolute left-0 md:hidden bg-blue-800 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg focus:outline-none">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
