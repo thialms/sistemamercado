@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProdutoController;
 
 Route::get('/home', function () {
     if (!session('logado')) {
@@ -38,3 +39,5 @@ Route::get('/scan', function () {
     }
     return view('scan'); 
 })->name('scan');
+
+Route::post('/buscar-produto', [ProdutoController::class, 'buscarProduto']);

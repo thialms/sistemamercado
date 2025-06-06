@@ -26,6 +26,7 @@
             <div class="mt-6 text-center">
                 <span class="block text-lg text-cyan-400 font-semibold font-jost mb-1">Código detectado:</span>
                 <span id="barcode-result" class="text-2xl text-white font-bold font-mono tracking-widest bg-blue-900 px-4 py-2 rounded-lg shadow"></span>
+                <div id="product-info" class="text-white mt-4 text-center"></div>
             </div>
         </div>
         <div class="w-full flex justify-center">
@@ -60,11 +61,47 @@
                 Quagga.start();
             });
 
+//adicionamos o novo Quagga.onDetected
+            let processing = false;
+
             Quagga.onDetected(function (result) {
+                if (processing) return; // evita múltiplas requisições
+                processing = true;
+
                 let code = result.codeResult.code;
                 document.getElementById('barcode-result').textContent = code;
-                alert('Código detectado: ' + code);
+
+                fetch("/buscar-produto", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ codigo: code })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.erro) {
+                        document.getElementById("product-info").innerHTML = `<p class="text-red-500">${data.erro}</p>`;
+                    } else {
+                        document.getElementById("product-info").innerHTML = `
+                            <p><strong>Nome:</strong> ${data.nome}</p>
+                            <p><strong>Marca:</strong> ${data.marca}</p>
+                            <p><strong>Descrição:</strong> ${data.descricao}</p>
+                            ${data.imagem ? `<img src="${data.imagem}" class="mx-auto mt-2 rounded shadow" width="100">` : ''}
+                        `;
+                    }
+                })
+                .catch(err => {
+                    document.getElementById("product-info").innerHTML = `<p class="text-red-500">Erro na consulta.</p>`;
+                    console.error(err);
+                })
+                .finally(() => {
+                    Quagga.stop(); // para escanear apenas uma vez
+                    processing = false;
+                });
             });
+
         } else {
             alert("Acesso à câmera não suportado.");
         }
