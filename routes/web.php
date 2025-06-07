@@ -25,14 +25,6 @@ Route::controller(LoginController::class)->group(function(){
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
-
-Route::get('/carrinho/adicionar', function () {
-    if (!session('logado')) {
-        return redirect()->route('login');
-    }
-    return app(\App\Http\Controllers\CartController::class)->index();
-})->name('addProdutoCarrinho');
-
 Route::get('/scan', function () {
     if (!session('logado')) {
         return redirect()->route('login');
