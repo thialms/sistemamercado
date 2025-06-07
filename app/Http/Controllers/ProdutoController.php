@@ -13,7 +13,7 @@ class ProdutoController extends Controller
 
         $url = "https://world.openfoodfacts.org/api/v0/product/{$codigo}.json";
 
-        $resposta = Http::get($url);
+        $resposta = Http::withoutVerifying()->get($url);
         $dados = $resposta->json();
 
         if ($dados['status'] === 1) {
