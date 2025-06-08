@@ -16,11 +16,13 @@ return new class extends Migration
             $table->unsignedBigInteger('produto_id');
             $table->double('custo');
             $table->unsignedBigInteger('origem_movimento_id');
+            $table->unsignedBigInteger('loja_id');
             $table->string('observacao');
             $table->timestamps();
-
+            
             $table->foreign('produto_id')->references('id')->on('produtos');
             $table->foreign('origem_movimento_id')->references('id')->on('estoque_movimentos');
+            $table->foreign('loja_id')->references('id')->on('lojas');
         });
     }
 

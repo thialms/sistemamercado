@@ -17,11 +17,13 @@ return new class extends Migration
             $table->string('tipo_movimento');
             $table->integer('quantidade');
             $table->unsignedBigInteger('usuario_id');
+            $table->unsignedBigInteger('loja_id');
             $table->string('observacao');
             $table->timestamps();
-
+            
             $table->foreign('produto_id')->references('id')->on('produtos');
             $table->foreign('usuario_id')->references('id')->on('users');
+            $table->foreign('loja_id')->references('id')->on('lojas');
         });
     }
 
