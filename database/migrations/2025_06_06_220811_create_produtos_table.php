@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('produtos', function (Blueprint $table) {
             $table->id(); // codigo de barras
+            $table->unsignedBigInteger('loja_id');
             $table->string('nome')->unique();
             $table->string('marca');
             $table->double('prco_venda');
             $table->double('custo');
             $table->integer('estoque_atual');
             $table->timestamps();
+            
+            $table->foreign('loja_id')->references('id')->on('lojas');
         });
     }
 

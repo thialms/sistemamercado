@@ -11,18 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('custos_historicos', function (Blueprint $table) {
+        Schema::create('caixas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('produto_id');
-            $table->double('custo');
-            $table->unsignedBigInteger('origem_movimento_id');
             $table->unsignedBigInteger('loja_id');
+            $table->unsignedBigInteger('usuario_id');
+            $table->timestamp('data_abertura')->nullable();
+            $table->timestamp('data_fechamento')->nullable();
+            $table->double('valor_abertura');
+            $table->double('valor_fechamento');
             $table->string('observacao');
+            $table->string('status');
             $table->timestamps();
-            
-            $table->foreign('produto_id')->references('id')->on('produtos');
-            $table->foreign('origem_movimento_id')->references('id')->on('estoque_movimentos');
+
             $table->foreign('loja_id')->references('id')->on('lojas');
+            $table->foreign('usuario_id')->references('id')->on('users');
         });
     }
 
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custos_historicos');
+        Schema::dropIfExists('caixas');
     }
 };
