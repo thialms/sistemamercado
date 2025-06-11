@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('loja_id');
             $table->string('nome')->unique();
             $table->string('marca');
-            $table->double('prco_venda');
+            $table->double('preco_venda');
             $table->double('custo');
             $table->integer('estoque_atual');
             $table->timestamps();

@@ -71,14 +71,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                {{-- Exemplo de produto, repita com @foreach --}}
+                @foreach($produtos as $produto)
                 <tr class="border-b border-blue-900 hover:bg-blue-100 dark:hover:bg-blue-950/30 transition cursor-pointer"
-                    onclick="openEditProductModal('Achoc Toddy 200g', 10, 5.99)">
-                    <td class="py-2 px-2 align-top font-semibold text-blue-900 dark:text-white">Achoc Toddy 200g</td>
-                    <td class="py-2 px-2 text-center align-middle text-blue-900 dark:text-white">10</td>
-                    <td class="py-2 px-2 text-right font-bold text-cyan-400">R$ 5,99</td>
+                    onclick="openEditProductModal('{{ addslashes($produto->nome) }}', {{ $produto->estoque_atual }}, {{ $produto->preco_venda }})">
+                    <td class="py-2 px-2 align-top font-semibold text-blue-900 dark:text-white">{{ $produto->nome }}</td>
+                    <td class="py-2 px-2 text-center align-middle text-blue-900 dark:text-white">{{ $produto->estoque_atual }}</td>
+                    <td class="py-2 px-2 text-right font-bold text-cyan-400">R$ {{ number_format($produto->preco_venda, 2, ',', '.') }}</td>
                 </tr>
-                {{-- @endforeach --}}
+                @endforeach
                 </tbody>
             </table>
             </div>
@@ -102,7 +102,7 @@
                 </li>
                 </ul>
                 <div id="editTab-info" class="edit-tab">
-                <form id="edit-product-form" action="" method="POST" class="flex flex-col gap-4">
+                <form id="edit-product-form" action="{{ route('produtos.store') }}" method="POST" class="flex flex-col gap-4">
                     @csrf
                     <input type="text" name="descricao" id="editDescricao" placeholder="Descrição" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
                     <input type="number" name="quantidade" id="editQuantidade" placeholder="Quantidade" min="0" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
@@ -195,7 +195,7 @@ function decrementQtd(btn) {
     <div class="relative w-full max-w-lg bg-gray-100 dark:bg-[#232b3b] rounded-3xl shadow-lg p-8 flex flex-col gap-6">
         <button onclick="closeAddProductModal()" class="absolute top-4 right-4 bg-blue-900 hover:bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center shadow transition text-2xl">&times;</button>
         <h2 class="text-2xl font-bold text-blue-900 dark:text-white font-jost text-center mb-4">Adicionar Produto</h2>
-        <form id="add-product-form" action="" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
+        <form id="add-product-form" action="{{ route('produtos.store') }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
             @csrf
             <input type="text" name="nome" placeholder="Nome do produto" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
             <input type="text" name="marca" placeholder="Marca" class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
@@ -304,4 +304,14 @@ function closeAddProductModal() {
     document.getElementById('add-product-modal').classList.add('hidden');
 }
 </script>
+@if(session('success'))
+    <div class="bg-green-100 text-green-800 p-2 rounded mb-2">{{ session('success') }}</div>
+@endif
+@if($errors->any())
+    <div class="bg-red-100 text-red-800 p-2 rounded mb-2">
+        @foreach($errors->all() as $error)
+            <div>{{ $error }}</div>
+        @endforeach
+    </div>
+@endif
 @endsection

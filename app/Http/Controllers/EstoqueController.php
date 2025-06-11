@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\produtos;
-use App\Models\estoque_movimento;
+use App\Models\estoque_movimentos;
 use App\Models\custos_historicos;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -14,17 +14,18 @@ class EstoqueController extends Controller
         DB::beginTransaction();
 
         try {
-            $produto = produto::create([
-                'id'            => $dados['id'],
+            $produto = produtos::create([
+                // 'id'            => $dados['id'],
                 'loja_id'       => $dados['loja_id'],
                 'nome'          => $dados['nome'],
+                'marca'        => $dados['marca'],
                 'preco_venda'   => $dados['preco_venda'],
                 'custo'         => $dados['custo'],
                 'estoque_atual' => $dados['quantidade_inicial'],
                 'created_at'    => now()
             ]);
 
-            $movimento = estoque_movimento::create([
+            $movimento = estoque_movimentos::create([
                 'produto_id'     => $produto->id,
                 'tipo_movimento' => 'ENTRADA_INICIAL',
                 'quantidade'     => $dados['quantidade_inicial'],
@@ -50,5 +51,37 @@ class EstoqueController extends Controller
             DB::rollBack();
             throw $e;
         }
+    }
+    public function adicionarProdutoView(Request $request)
+    {
+        $dados = $request->validate([
+            'nome' => 'required|string',
+            'marca' => 'nullable|string',
+            'quantidade' => 'required|integer|min:0',
+            'preco' => 'required|numeric|min:0',
+            'custo' => 'required|numeric|min:0',
+        ]);
+
+        $dados['loja_id'] = 1;
+
+        $userId = 1;
+        // $dados['loja_id'] = auth()->user()->loja_id ?? 1;
+        $dados['quantidade_inicial'] = $dados['quantidade'];
+        $dados['preco_venda'] = $dados['preco'];
+
+        // Corrija aqui: se não houver usuário, lance erro ou redirecione
+        // $usuarioId = auth()->id();
+        // if (!$usuarioId) {
+        //     return redirect()->back()->with('error', 'Usuário não autenticado!');
+        // }
+
+        $this->adicionarProduto($dados, $userId);
+
+        return redirect()->back()->with('success', 'Produto adicionado com sucesso!');
+    }
+    public function index()
+    {
+        $produtos = produtos::all();
+        return view('estoque', compact('produtos'));
     }
 }

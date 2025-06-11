@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\EstoqueController;
 
 Route::get('/home', function () {
     if (!session('logado')) {
@@ -19,12 +20,9 @@ Route::get('/vendas', function () {
     return view('vendas');
 })->name('vendas');
 
-Route::get('/estoque', function () {
-    if (!session('logado')) {
-        return redirect()->route('login');
-    }
-    return view('estoque');
-})->name('estoque');
+Route::get('/estoque', [EstoqueController::class, 'index'])->name('estoque');
+
+Route::post('/estoque', [EstoqueController::class, 'adicionarProdutoView'])->name('produtos.store');
 
 Route::controller(LoginController::class)->group(function(){
     Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
@@ -40,3 +38,4 @@ Route::get('/scan', function () {
 })->name('scan');
 
 Route::post('/buscar-produto', [ProdutoController::class, 'buscarProduto']);
+Route::post('/estoque/adicionar-produto', [EstoqueController::class, 'adicionarProdutoView'])->name('produtos.store');
