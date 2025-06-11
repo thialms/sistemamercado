@@ -19,6 +19,13 @@ Route::get('/vendas', function () {
     return view('vendas');
 })->name('vendas');
 
+Route::get('/estoque', function () {
+    if (!session('logado')) {
+        return redirect()->route('login');
+    }
+    return view('estoque');
+})->name('estoque');
+
 Route::controller(LoginController::class)->group(function(){
     Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'store'])->name('login.store');
