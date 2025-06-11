@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('formas_pagamento', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('loja_id');
             $table->string('nome');
+            
+            $table->foreign('loja_id')->references('id')->on('lojas');
         });
     }
 
