@@ -39,3 +39,4 @@ Route::get('/scan', function () {
 
 Route::post('/buscar-produto', [ProdutoController::class, 'buscarProduto']);
 Route::post('/estoque/adicionar-produto', [EstoqueController::class, 'adicionarProdutoView'])->name('produtos.store');
+Route::put('/produtos/{produto}', [EstoqueController::class, 'update'])->name('produtos.update');

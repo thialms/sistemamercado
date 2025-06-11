@@ -84,4 +84,24 @@ class EstoqueController extends Controller
         $produtos = produtos::all();
         return view('estoque', compact('produtos'));
     }
+    public function update(Request $request, $id)
+    {
+        try {
+            $produto = \App\Models\produtos::findOrFail($id);
+
+            $dados = $request->validate([
+                'nome' => 'required|string',
+                'estoque_atual' => 'required|integer|min:0',
+                'preco_venda' => 'required|numeric|min:0',
+            ]);
+
+            $produto->update($dados);
+
+            return response()->json(['success' => true]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

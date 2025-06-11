@@ -73,7 +73,7 @@
                 <tbody>
                 @foreach($produtos as $produto)
                 <tr class="border-b border-blue-900 hover:bg-blue-100 dark:hover:bg-blue-950/30 transition cursor-pointer"
-                    onclick="openEditProductModal('{{ addslashes($produto->nome) }}', {{ $produto->estoque_atual }}, {{ $produto->preco_venda }})">
+                    onclick="openEditProductModal('{{ addslashes($produto->nome) }}', {{ $produto->estoque_atual }}, {{ $produto->preco_venda }}, {{ $produto->id }})">
                     <td class="py-2 px-2 align-top font-semibold text-blue-900 dark:text-white">{{ $produto->nome }}</td>
                     <td class="py-2 px-2 text-center align-middle text-blue-900 dark:text-white">{{ $produto->estoque_atual }}</td>
                     <td class="py-2 px-2 text-right font-bold text-cyan-400">R$ {{ number_format($produto->preco_venda, 2, ',', '.') }}</td>
@@ -102,14 +102,16 @@
                 </li>
                 </ul>
                 <div id="editTab-info" class="edit-tab">
-                <form id="edit-product-form" action="{{ route('produtos.store') }}" method="POST" class="flex flex-col gap-4">
+                <form id="edit-product-form" method="POST" class="flex flex-col gap-4">
                     @csrf
-                    <input type="text" name="descricao" id="editDescricao" placeholder="Descrição" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
-                    <input type="number" name="quantidade" id="editQuantidade" placeholder="Quantidade" min="0" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
-                    <input type="number" name="preco" id="editPreco" placeholder="Preço" min="0" step="0.01" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
+                    @method('PUT')
+                    <input type="hidden" name="id" id="editId">
+                    <input type="text" name="nome" id="editDescricao" placeholder="Descrição" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
+                    <input type="number" name="estoque_atual" id="editQuantidade" placeholder="Quantidade" min="0" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
+                    <input type="number" name="preco_venda" id="editPreco" placeholder="Preço" min="0" step="0.01" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
                     <div class="flex justify-end gap-2">
-                    <button type="button" onclick="closeEditProductModal()" class="bg-gray-400 hover:bg-gray-500 text-white font-bold px-6 py-2 rounded-full transition">Cancelar</button>
-                    <button type="submit" class="bg-blue-900 hover:bg-blue-600 text-white font-bold px-6 py-2 rounded-full transition">Salvar</button>
+                        <button type="button" onclick="closeEditProductModal()" class="bg-gray-400 hover:bg-gray-500 text-white font-bold px-6 py-2 rounded-full transition">Cancelar</button>
+                        <button type="submit" class="bg-blue-900 hover:bg-blue-600 text-white font-bold px-6 py-2 rounded-full transition">Salvar</button>
                     </div>
                 </form>
                 </div>
@@ -139,10 +141,12 @@
             </div>
         </div>
         <script>
-        function openEditProductModal(descricao, quantidade, preco) {
-            document.getElementById('editDescricao').value = descricao;
+        function openEditProductModal(nome, quantidade, preco, id) {
+            document.getElementById('editDescricao').value = nome;
             document.getElementById('editQuantidade').value = quantidade;
             document.getElementById('editPreco').value = preco;
+            document.getElementById('editId').value = id;
+            document.getElementById('edit-product-form').action = `/produtos/${id}`;
             document.getElementById('edit-product-modal').classList.remove('hidden');
             showEditTab('info');
         }
@@ -155,6 +159,48 @@
             document.querySelectorAll('#editProductTabs .tab-btn').forEach(btn => btn.classList.remove('border-blue-900', 'border-b-2'));
             document.querySelector(`#editProductTabs .tab-btn[onclick="showEditTab('${tab}')"]`).classList.add('border-blue-900', 'border-b-2');
         }
+        document.getElementById('edit-product-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const id = document.getElementById('editId').value;
+    const data = new FormData(form);
+
+    fetch(form.action, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json',
+            'X-HTTP-Method-Override': 'PUT'
+        },
+        body: data
+    })
+    .then(async res => {
+        let data;
+        try {
+            data = await res.json();
+        } catch (e) {
+            const text = await res.text();
+            alert('Erro inesperado: ' + text);
+            throw e;
+        }
+        return data;
+    })
+    .then(response => {
+        if (response.success) {
+            closeEditProductModal();
+            location.reload();
+        } else if(response.errors) {
+            alert('Erro: ' + Object.values(response.errors).join('\n'));
+        } else {
+            alert('Erro ao atualizar produto!');
+        }
+    })
+    .catch((err) => {
+        alert('Erro ao atualizar produto!');
+        console.error(err);
+    });
+});
         </script>
     </div>
 </div>
@@ -193,7 +239,7 @@ function decrementQtd(btn) {
 {{-- Modal de adicionar produto --}}
 <div id="add-product-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 hidden">
     <div class="relative w-full max-w-lg bg-gray-100 dark:bg-[#232b3b] rounded-3xl shadow-lg p-8 flex flex-col gap-6">
-        <button onclick="closeAddProductModal()" class="absolute top-4 right-4 bg-blue-900 hover:bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center shadow transition text-2xl">&times;</button>
+        <button onclick="closeAddProductModal()" class="cursor-pointer absolute top-4 right-4 bg-blue-900 hover:bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center shadow transition text-2xl">&times;</button>
         <h2 class="text-2xl font-bold text-blue-900 dark:text-white font-jost text-center mb-4">Adicionar Produto</h2>
         <form id="add-product-form" action="{{ route('produtos.store') }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
             @csrf
@@ -204,8 +250,8 @@ function decrementQtd(btn) {
             <input type="number" name="preco" placeholder="Preço" min="0" step="0.01" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
             <input type="number" name="custo" placeholder="Custo" min="0" step="0.01" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
             <div class="flex justify-end gap-2">
-                <button type="button" onclick="closeAddProductModal()" class="bg-gray-400 hover:bg-gray-500 text-white font-bold px-6 py-2 rounded-full transition">Cancelar</button>
-                <button type="submit" class="bg-blue-900 hover:bg-blue-600 text-white font-bold px-6 py-2 rounded-full transition">Adicionar</button>
+                <button type="button" onclick="closeAddProductModal()" class="bg-gray-400 hover:bg-gray-500 text-white font-bold px-6 py-2 rounded-full transition cursor-pointer">Cancelar</button>
+                <button type="submit" class="cursor-pointer bg-blue-900 hover:bg-blue-600 text-white font-bold px-6 py-2 rounded-full transition">Adicionar</button>
             </div>
         </form>
     </div>
