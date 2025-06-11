@@ -5,6 +5,18 @@
 
 @vite('resources/css/app.css')
 
+{{-- Saudação dinâmica --}}
+@php
+    $hora = intval(now()->format('H'));
+    if ($hora >= 4 && $hora < 12) {
+        $saudacao = 'Bom dia';
+    } elseif ($hora >= 12 && $hora < 18) {
+        $saudacao = 'Boa tarde';
+    } else {
+        $saudacao = 'Boa noite';
+    }
+@endphp
+
 <div id="appTheme" class="min-h-screen dark:bg-[#030e1a] flex transition-colors duration-300">
 
     {{-- Adicionar os dashboards para os dados que aparecem --}}
@@ -74,13 +86,19 @@
     <div id="sidebarOverlay" class="fixed inset-0 bg-black/30 z-30 hidden md:hidden pointer-events-none transition-opacity duration-300"></div>
 
     <main class="flex-1 p-4 sm:p-8 space-y-8 overflow-y-auto transition-colors duration-300">
-        <div class="flex mb-6 items-center justify-end relative">
-            <button id="sidebarToggle" class="cursor-pointer absolute left-0 md:hidden bg-blue-800 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-            <h1 class="text-2xl font-bold text-blue-900 dark:text-blue-200 w-full text-right md:text-right">Dashboard</h1>
+        <div class="flex mb-6 items-center justify-between relative">
+            <div class="flex items-center gap-3">
+                <button id="sidebarToggle" class="cursor-pointer md:hidden bg-blue-800 text-white rounded-full w-15 h-10 flex items-center justify-center shadow-lg focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <span class="ml-2 text-xl font-bold">
+                    <span class="text-blue-400 dark:text-blue-300">{{ $saudacao }},</span>
+                    <span class="text-blue-900 dark:text-blue-200"> Fernando</span>
+                </span>
+            </div>
+            <h1 class="text-2xl font-bold text-blue-900 dark:text-blue-200 text-right w-full md:w-auto">Dashboard</h1>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
             <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-6 shadow flex flex-col">

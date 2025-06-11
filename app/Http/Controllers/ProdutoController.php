@@ -31,5 +31,17 @@ class ProdutoController extends Controller
             ], 404);
         }
     }
+
+    public function buscaRapida(Request $request)
+    {
+        $query = $request->input('query');
+        $produtos = \App\Models\produtos::where('nome', 'like', "%{$query}%")
+            ->orWhere('id', 'like', "%{$query}%") // <-- ajuste aqui
+            ->where('estoque_atual', '>', 0)
+            ->limit(10)
+            ->get(['id', 'nome', 'estoque_atual', 'preco_venda']); // <-- ajuste aqui
+
+        return response()->json($produtos);
+    }
 }
 

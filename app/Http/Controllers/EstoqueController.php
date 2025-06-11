@@ -79,10 +79,18 @@ class EstoqueController extends Controller
 
         return redirect()->back()->with('success', 'Produto adicionado com sucesso!');
     }
-    public function index()
+    public function index(Request $request)
     {
-        $produtos = produtos::all();
-        return view('estoque', compact('produtos'));
+        $query = $request->input('query');
+        $produtos = \App\Models\produtos::query();
+
+        if ($query) {
+            $produtos->where('nome', 'like', "%{$query}%");
+        }
+
+        $produtos = $produtos->get();
+
+        return view('estoque', compact('produtos', 'query'));
     }
     public function update(Request $request, $id)
     {

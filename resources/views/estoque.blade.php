@@ -26,11 +26,12 @@
 
     {{-- Pesquisa de Produtos --}}
     <div class="w-full max-w-xl p-6 flex flex-col gap-6">
-        <form action="" method="GET" class="w-full flex items-center">
+        <form action="{{ route('estoque') }}" method="GET" class="w-full flex items-center">
             <div class="flex flex-1">
                 <input
                     type="text"
                     name="query"
+                    value="{{ old('query', $query ?? '') }}"
                     placeholder="Pesquisar produtos..."
                     class="flex-1 px-4 py-2 rounded-l-full bg-gray-100 dark:bg-gray-800 border border-blue-600 text-blue-900 dark:text-white focus:outline-none"
                     required
@@ -72,13 +73,13 @@
                 </thead>
                 <tbody>
                 @foreach($produtos as $produto)
-                <tr class="border-b border-blue-900 hover:bg-blue-100 dark:hover:bg-blue-950/30 transition cursor-pointer"
-                    onclick="openEditProductModal('{{ addslashes($produto->nome) }}', {{ $produto->estoque_atual }}, {{ $produto->preco_venda }}, {{ $produto->id }})">
-                    <td class="py-2 px-2 align-top font-semibold text-blue-900 dark:text-white">{{ $produto->nome }}</td>
-                    <td class="py-2 px-2 text-center align-middle text-blue-900 dark:text-white">{{ $produto->estoque_atual }}</td>
-                    <td class="py-2 px-2 text-right font-bold text-cyan-400">R$ {{ number_format($produto->preco_venda, 2, ',', '.') }}</td>
-                </tr>
-                @endforeach
+<tr class="border-b border-blue-900 hover:bg-blue-100 dark:hover:bg-blue-950/30 transition cursor-pointer"
+    onclick="openEditProductModal('{{ addslashes($produto->nome) }}', {{ $produto->estoque_atual }}, {{ $produto->preco_venda }}, {{ $produto->id }})">
+    <td class="py-2 px-2 align-top font-semibold text-blue-900 dark:text-white">{{ $produto->nome }}</td>
+    <td class="py-2 px-2 text-center align-middle text-blue-900 dark:text-white">{{ $produto->estoque_atual }}</td>
+    <td class="py-2 px-2 text-right font-bold text-cyan-400">R$ {{ number_format($produto->preco_venda, 2, ',', '.') }}</td>
+</tr>
+@endforeach
                 </tbody>
             </table>
             </div>
