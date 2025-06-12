@@ -322,11 +322,12 @@ function startQuagga() {
             if (data.erro) {
                 document.getElementById("product-info").innerHTML = `<p class="text-red-500">${data.erro}</p>`;
             } else {
+                const produto = data.produto;
                 // Adiciona ao carrinho (tabela)
                 const carrinhoTable = document.querySelector('table tbody');
                 // Verifica se já existe o produto no carrinho
                 let row = Array.from(carrinhoTable.children).find(tr =>
-                    tr.querySelector('td') && tr.querySelector('td').textContent.trim() == data.id
+                    tr.querySelector('td') && tr.querySelector('td').textContent.trim() == produto.id
                 );
                 if (row) {
                     // Se já existe, incrementa a quantidade
@@ -338,12 +339,12 @@ function startQuagga() {
                     // Se não existe, adiciona nova linha
                     const newRow = document.createElement('tr');
                     newRow.className = "border-b border-blue-900";
-                    newRow.setAttribute('data-preco', data.preco);
+                    newRow.setAttribute('data-preco', produto.preco);
                     newRow.innerHTML = `
-                        <td class="py-2 px-2 align-top font-bold text-blue-300">${data.id}</td>
+                        <td class="py-2 px-2 align-top font-bold text-blue-300">${produto.id}</td>
                         <td class="py-2 px-2">
-                            <div class="font-semibold text-blue-900 dark:text-white">${data.nome}</div>
-                            <div class="text-xs text-gray-400">${data.codigo_barras || ''}</div>
+                            <div class="font-semibold text-blue-900 dark:text-white">${produto.nome}</div>
+                            <div class="text-xs text-gray-400">${produto.codigo_barras || ''}</div>
                         </td>
                         <td class="py-2 px-2 text-center align-middle">
                             <div class="flex items-center justify-center gap-2">
@@ -352,7 +353,7 @@ function startQuagga() {
                                 <button type="button" class="cursor-pointer bg-blue-800 text-white rounded-full w-8 h-8 text-2xl flex items-center justify-center" onclick="incrementQtd(this)">+</button>
                             </div>
                         </td>
-                        <td class="py-2 px-2 text-right font-bold text-cyan-400 subtotal">${parseFloat(data.preco).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                        <td class="py-2 px-2 text-right font-bold text-cyan-400 subtotal">${parseFloat(produto.preco).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                         <td class="py-2 px-2 text-center align-middle">
                             <button type="button" class="remover-produto bg-red-600 hover:bg-red-800 text-white rounded-full w-8 h-8 flex items-center justify-center" title="Remover produto">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

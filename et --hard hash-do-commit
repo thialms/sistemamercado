@@ -1,0 +1,53 @@
+[33md14333d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge branch 'main' of https://github.com/thialms/sistemamercado
+[33m40eacb2[m feat: add charts for daily and monthly earnings in home view
+[33mf66550e[m Merge branch 'main' of https://github.com/thialms/sistemamercado
+[33mc0ddf91[m feat: enhance VendaController to handle stock updates and sales transactions
+[33mc6c7cc3[m feat: add chartjs to make canvas
+[33ma6aa24d[m fix: altered produtos table and EstoqueController to add bar code field
+[33m85c5852[m feat: add VendaController
+[33mfcca0b0[m feat: add UpdateProductData
+[33m4e0eb9c[m feat: add StorageAdd function
+[33m049e045[m Merge branch 'backend'
+[33meb1a78a[m feat: add stock view and dark theme
+[33m48a57ba[m[33m ([m[1;31morigin/backend[m[33m)[m Merge branch 'backend' of https://github.com/thialms/sistemamercado into backend
+[33m3f2070f[m feat: add estoqueContoller
+[33m70a5af6[m feat: add models for all tables
+[33mf97602d[m feat: add create_caixas_table migration
+[33m21d4da6[m feat: add create_lojas_table migration and updated all migrations that should have a foreign key from lojas
+[33mcd83e5a[m Merge branch 'main' of https://github.com/thialms/sistemamercado
+[33m8b5034b[m Merge branch 'backend'
+[33m731ecfc[m refactor: replace 3 views with a single view and modal
+[33m136823c[m Merge branch 'main' into backend
+[33m9099bab[m feat: add create_vendas_pagamentos_table migration
+[33mc741f46[m feat: add create_vendas_itens_table migration
+[33m9e2a821[m Merge branch 'backend' of https://github.com/thialms/sistemamercado into backend
+[33ma3d64d4[m feat: add crate_vendas_table migration
+[33m33f5e0c[m feat: add create_formas_pagamento_table migration
+[33mc7fa1bb[m feat: add create_custos_historicos_table migration
+[33m5dec8e3[m feat: add create_clientes_table migration
+[33m1fec885[m feat: add create_estoque_movimentos_table migration
+[33mc39dfa5[m feat: add crete_produtos_table migration
+[33m5718019[m refactor: replace 3 views with a single view and modal
+[33mffcf50e[m build: testes
+[33m8ad3dfd[m feat: add alert when scan succes
+[33mb75b541[m build: testes
+[33m7119af5[m build: testes
+[33maa90b94[m build:teste
+[33m5b24e68[m build: testes
+[33m42b40e9[m build: testing build
+[33mcf08a26[m build: assets
+[33mce56a4b[m build: assets
+[33m6dde311[m fix: testing build
+[33m6068fff[m fix: repair build file
+[33md6ea5ea[m feat: add Procfile to test
+[33m6545252[m feat: add the search product view and implement the QuaggaJs.
+[33m3417a9f[m fix: fixed the responsivity ipad screen
+[33m30b35ee[m feat: add new theme, remake the menu page and add sidebar
+[33m27c44fc[m fix: fixed merge conflicts
+[33m77c1b23[m feat: add a sale page and route
+[33m89698fd[m docs: update README.md
+[33m94260fe[m fix: fixed merge conflicts
+[33m2e42d93[m feat: add a menu page
+[33md9b3acc[m feat: set login page as initial and add variables to login testing
+[33m96438fd[m feat: add initial login page
+[33me3a3a78[m Initial commit
