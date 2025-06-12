@@ -8,6 +8,7 @@ class produtos extends Model
 {
     protected $fillable = [
         'loja_id',
+        'codigo_barras', // <-- Adicione esta linha
         'nome',
         'marca',
         'preco_venda',

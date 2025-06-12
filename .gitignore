@@ -20,3 +20,7 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+/public/build
+/public/build/*
+!/public/build/.gitkeep
+vite.config.js

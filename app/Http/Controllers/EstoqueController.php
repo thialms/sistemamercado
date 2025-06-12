@@ -15,14 +15,14 @@ class EstoqueController extends Controller
 
         try {
             $produto = produtos::create([
-                // 'id'            => $dados['id'],
-                'loja_id'       => $dados['loja_id'],
-                'nome'          => $dados['nome'],
-                'marca'        => $dados['marca'],
-                'preco_venda'   => $dados['preco_venda'],
-                'custo'         => $dados['custo'],
-                'estoque_atual' => $dados['quantidade_inicial'],
-                'created_at'    => now()
+                'loja_id'        => $dados['loja_id'],
+                'codigo_barras'  => $dados['codigo_barras'],
+                'nome'           => $dados['nome'],
+                'marca'          => $dados['marca'],
+                'preco_venda'    => $dados['preco_venda'],
+                'custo'          => $dados['custo'],
+                'estoque_atual'  => $dados['quantidade_inicial'],
+                'created_at'     => now()
             ]);
 
             $movimento = estoque_movimentos::create([
@@ -55,7 +55,8 @@ class EstoqueController extends Controller
     public function adicionarProdutoView(Request $request)
     {
         $dados = $request->validate([
-            'nome' => 'required|string',
+            'codigo_barras' => 'required|integer|unique:produtos,codigo_barras',
+            'nome' => 'required|string|unique:produtos,nome',
             'marca' => 'nullable|string',
             'quantidade' => 'required|integer|min:0',
             'preco' => 'required|numeric|min:0',
@@ -63,17 +64,9 @@ class EstoqueController extends Controller
         ]);
 
         $dados['loja_id'] = 1;
-
         $userId = 1;
-        // $dados['loja_id'] = auth()->user()->loja_id ?? 1;
         $dados['quantidade_inicial'] = $dados['quantidade'];
         $dados['preco_venda'] = $dados['preco'];
-
-        // Corrija aqui: se não houver usuário, lance erro ou redirecione
-        // $usuarioId = auth()->id();
-        // if (!$usuarioId) {
-        //     return redirect()->back()->with('error', 'Usuário não autenticado!');
-        // }
 
         $this->adicionarProduto($dados, $userId);
 
