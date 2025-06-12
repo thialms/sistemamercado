@@ -13,4 +13,13 @@ class vendas extends Model
         'tipo_venda',
         'total',
     ];
+
+    public function itens()
+    {
+        return $this->hasMany(\App\Models\vendas_itens::class, 'venda_id');
+    }
+    public function usuario()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'usuario_id');
+    }
 }

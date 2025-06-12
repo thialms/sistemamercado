@@ -36,7 +36,7 @@
             <nav>
                 <ul class="space-y-4">
                     <li>
-                        <a href="#" class="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:bg-blue-50 hover:dark:bg-gray-800 hover:text-blue-800 hover:dark:text-blue-400 rounded-lg px-4 py-2 transition-colors text-lg">
+                        <a href="{{ route('relatorio') }}" class="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:bg-blue-50 hover:dark:bg-gray-800 hover:text-blue-800 hover:dark:text-blue-400 rounded-lg px-4 py-2 transition-colors text-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19V6M6 19v-4M16 19v-2M21 19V9" />
                             </svg>

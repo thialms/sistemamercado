@@ -14,4 +14,9 @@ class vendas_itens extends Model
         'quantidade',
         'preco_unitario',
     ];
+
+    public function produto()
+    {
+        return $this->belongsTo(\App\Models\produtos::class, 'produto_id');
+    }
 }

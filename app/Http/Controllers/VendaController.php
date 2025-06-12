@@ -92,4 +92,20 @@ class VendaController extends Controller
             return response()->json(['erro' => $e->getMessage()], 500);
         }
     }
+
+    public function relatorio()
+    {
+        $vendas = \App\Models\vendas::with(['itens.produto', 'usuario'])->orderBy('id', 'desc')->get();
+        return view('relatorio', compact('vendas'));
+    }
+    public function novaVenda()
+    {
+        $ultimoId = \App\Models\vendas::max('id') ?? 0;
+        $proximoId = $ultimoId + 1;
+        // Passe $proximoId para a view
+        return view('vendas', [
+            'proximoId' => $proximoId,
+            // outros dados necessários...
+        ]);
+    }
 }

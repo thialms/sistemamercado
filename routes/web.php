@@ -49,3 +49,4 @@ Route::put('/produtos/{produto}', [EstoqueController::class, 'update'])->name('p
 Route::get('/produtos/busca-rapida', [ProdutoController::class, 'buscaRapida']);
 Route::post('/finalizar-compra', [VendaController::class, 'finalizarCompra']);
 Route::post('/buscar-no-estoque', [ProdutoController::class, 'buscarNoEstoque']);
+Route::get('/relatorio', [\App\Http\Controllers\VendaController::class, 'relatorio'])->name('relatorio');
