@@ -107,5 +107,27 @@ class ProdutoController extends Controller
             return response()->json(['erro' => 'Produto não está no carrinho'], 404);
         }
     }
+
+    public function update(Request $request, $id)
+    {
+        \Log::info('Recebido para update', $request->all());
+
+        $produto = \App\Models\produtos::findOrFail($id);
+
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'codigo_barras' => 'nullable|numeric|unique:produtos,codigo_barras,' . $id,
+            'estoque_atual' => 'required|integer|min:0',
+            'preco_venda' => 'required|numeric|min:0',
+        ]);
+
+        $produto->nome = $request->input('nome');
+        $produto->codigo_barras = $request->input('codigo_barras') ?: null;
+        $produto->estoque_atual = $request->input('estoque_atual');
+        $produto->preco_venda = $request->input('preco_venda');
+        $produto->save();
+
+        return response()->json(['success' => true]);
+    }
 }
 

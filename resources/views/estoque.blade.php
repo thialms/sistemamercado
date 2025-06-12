@@ -65,22 +65,29 @@
             <div class="overflow-x-auto">
             <table class="w-full text-left font-jost">
                 <thead>
-                <tr class="border-b border-blue-900">
-                    <th class="py-2 px-2 font-bold text-cyan-400 text-base">Descrição</th>
-                    <th class="py-2 px-2 font-bold text-cyan-400 text-base text-center w-32">Qtd Estoque</th>
-                    <th class="py-2 px-2 font-bold text-cyan-400 text-base text-right">Preço</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($produtos as $produto)
+<tr class="border-b border-blue-900">
+    <th class="py-2 px-2 font-bold text-cyan-400 text-base">Descrição</th>
+    <th class="py-2 px-2 font-bold text-cyan-400 text-base text-center w-32">Qtd Estoque</th>
+    <th class="py-2 px-2 font-bold text-cyan-400 text-base text-right">Preço</th>
+</tr>
+</thead>
+<tbody>
+@foreach($produtos as $produto)
 <tr class="border-b border-blue-900 hover:bg-blue-100 dark:hover:bg-blue-950/30 transition cursor-pointer"
-    onclick="openEditProductModal('{{ addslashes($produto->nome) }}', {{ $produto->estoque_atual }}, {{ $produto->preco_venda }}, {{ $produto->id }})">
-    <td class="py-2 px-2 align-top font-semibold text-blue-900 dark:text-white">{{ $produto->nome }}</td>
+    onclick="openEditProductModal('{{ addslashes($produto->nome) }}', {{ $produto->estoque_atual }}, {{ $produto->preco_venda }}, {{ $produto->id }}, '{{ addslashes($produto->codigo_barras) }}')">
+    <td class="py-2 px-2 align-top font-semibold text-blue-900 dark:text-white">
+        {{ $produto->nome }}
+        @if($produto->codigo_barras)
+            <div class="text-xs text-gray-500 dark:text-gray-400 font-normal mt-1">
+                Código de Barras: {{ $produto->codigo_barras }}
+            </div>
+        @endif
+    </td>
     <td class="py-2 px-2 text-center align-middle text-blue-900 dark:text-white">{{ $produto->estoque_atual }}</td>
     <td class="py-2 px-2 text-right font-bold text-cyan-400">R$ {{ number_format($produto->preco_venda, 2, ',', '.') }}</td>
 </tr>
 @endforeach
-                </tbody>
+</tbody>
             </table>
             </div>
         </div>
@@ -103,19 +110,26 @@
                 </li>
                 </ul>
                 <div id="editTab-info" class="edit-tab">
-                <form id="edit-product-form" method="POST" class="flex flex-col gap-4">
-                    @csrf
-                    @method('PUT')
-                    <input type="hidden" name="id" id="editId">
-                    <input type="text" name="nome" id="editDescricao" placeholder="Descrição" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
-                    <input type="number" name="estoque_atual" id="editQuantidade" placeholder="Quantidade" min="0" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
-                    <input type="number" name="preco_venda" id="editPreco" placeholder="Preço" min="0" step="0.01" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
-                    <div class="flex justify-end gap-2">
-                        <button type="button" onclick="closeEditProductModal()" class="bg-gray-400 hover:bg-gray-500 text-white font-bold px-6 py-2 rounded-full transition">Cancelar</button>
-                        <button type="submit" class="bg-blue-900 hover:bg-blue-600 text-white font-bold px-6 py-2 rounded-full transition">Salvar</button>
-                    </div>
-                </form>
-                </div>
+    <form id="edit-product-form" method="POST" class="flex flex-col gap-4">
+        @csrf
+        @method('PUT')
+        <input type="hidden" name="id" id="editId">
+
+        <label for="editDescricao" class="font-semibold text-blue-900 dark:text-white">Nome do Produto</label>
+        <input type="text" name="nome" id="editDescricao" placeholder="Descrição" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
+
+        <label for="editQuantidade" class="font-semibold text-blue-900 dark:text-white">Quantidade em Estoque</label>
+        <input type="number" name="estoque_atual" id="editQuantidade" placeholder="Quantidade" min="0" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
+
+        <label for="editPreco" class="font-semibold text-blue-900 dark:text-white">Preço de Venda</label>
+        <input type="number" name="preco_venda" id="editPreco" placeholder="Preço" min="0" step="0.01" required class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-blue-900 dark:text-white focus:outline-none">
+
+        <div class="flex justify-end gap-2">
+            <button type="button" onclick="closeEditProductModal()" class="bg-gray-400 hover:bg-gray-500 text-white font-bold px-6 py-2 rounded-full transition">Cancelar</button>
+            <button type="submit" class="bg-blue-900 hover:bg-blue-600 text-white font-bold px-6 py-2 rounded-full transition">Salvar</button>
+        </div>
+    </form>
+</div>
                 <div id="editTab-saida" class="edit-tab hidden">
                 {{-- Aqui vai o controle de saída do produto --}}
                 <div class="text-blue-900 dark:text-white">
@@ -142,7 +156,7 @@
             </div>
         </div>
         <script>
-        function openEditProductModal(nome, quantidade, preco, id) {
+        function openEditProductModal(nome, quantidade, preco, id, codigo_barras = '') {
             document.getElementById('editDescricao').value = nome;
             document.getElementById('editQuantidade').value = quantidade;
             document.getElementById('editPreco').value = preco;
