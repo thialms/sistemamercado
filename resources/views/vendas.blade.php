@@ -425,17 +425,24 @@ document.getElementById('confirm-btn').addEventListener('click', function() {
         body: JSON.stringify({ itens })
     })
     .then(res => res.json())
-    .then data => {
+    .then(data => {
         if (data.sucesso) {
             alert('Compra finalizada com sucesso!');
             window.location.reload();
         } else {
             alert(data.erro || 'Erro ao finalizar compra.');
+            // Reabre o modal em caso de erro
+            document.getElementById('confirm-modal').classList.remove('hidden');
         }
     })
-    .catch(() => alert('Erro ao finalizar compra.'))
+    .catch(() => {
+        alert('Erro ao finalizar compra.');
+        // Reabre o modal em caso de erro
+        document.getElementById('confirm-modal').classList.remove('hidden');
+    })
     .finally(() => {
-        document.getElementById('confirm-modal').classList.add('hidden');
+        // Fecha o modal apenas se a compra foi finalizada com sucesso
+        // (não feche aqui, pois pode ser erro)
     });
 });
 </script>

@@ -14,6 +14,10 @@ class VendaController extends Controller
     public function finalizarCompra(Request $request)
     {
         $itens = $request->input('itens', []);
+        if (!is_array($itens) || count($itens) == 0) {
+            return response()->json(['erro' => 'Nenhum item enviado para venda.'], 400);
+        }
+
         $usuarioId = 1; // Ajuste conforme autenticação
         $lojaId = 1; // Ajuste conforme autenticação
         $formaPagamento = 1;
@@ -26,9 +30,13 @@ class VendaController extends Controller
 
             // 1. Verifica todos os itens antes de atualizar o estoque
             foreach ($itens as $item) {
+                if (!isset($item['id']) || !isset($item['quantidade'])) {
+                    DB::rollBack();
+                    return response()->json(['erro' => 'Dados do item inválidos.'], 400);
+                }
                 $produto = produtos::where('id', $item['id'])->lockForUpdate()->first();
                 if (!$produto || $produto->estoque_atual < $item['quantidade']) {
-                    $itensInsuficientes[] = $item['nome'];
+                    $itensInsuficientes[] = $item['nome'] ?? 'ID '.$item['id'];
                 }
             }
 
