@@ -103,7 +103,22 @@ class EstoqueController extends Controller
                 'preco_venda' => 'required|numeric|min:0',
             ]);
 
+            // Salva os dados antigos para comparação
+            $estoqueAnterior = $produto->estoque_atual;
+
             $produto->update($dados);
+
+            // Se houve alteração no estoque, salva o movimento
+            if ($estoqueAnterior != $dados['estoque_atual']) {
+                estoque_movimentos::create([
+                    'produto_id'     => $produto->id,
+                    'tipo_movimento' => 'AJUSTE',
+                    'quantidade'     => $dados['estoque_atual'] - $estoqueAnterior,
+                    'usuario_id'     => auth()->id() ?? 1,
+                    'loja_id'        => $produto->loja_id,
+                    'observacao'     => 'Ajuste manual de estoque',
+                ]);
+            }
 
             return response()->json(['success' => true]);
         } catch (\Illuminate\Validation\ValidationException $e) {
