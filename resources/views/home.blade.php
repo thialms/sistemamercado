@@ -106,17 +106,24 @@
                 <span class="text-2xl font-bold text-blue-900 dark:text-blue-200">R$ 354,99 <span class="text-green-500 text-sm">+15%</span></span>
             </div>
             <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-6 shadow flex flex-col">
-                <span class="text-gray-900 dark:text-gray-300 text-sm">Clientes do Mês</span>
-                <span class="text-2xl font-bold text-blue-900 dark:text-blue-200">+25 <span class="text-red-500 text-sm">-14%</span></span>
-            </div>
-            <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-6 shadow flex flex-col">
                 <span class="text-gray-900 dark:text-gray-300 text-sm">Ganhos do Mês</span>
                 <span class="text-2xl font-bold text-blue-900 dark:text-blue-200">R$ 3874,85 <span class="text-green-500 text-sm">+8%</span></span>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow flex flex-col">
+                <span class="text-gray-900 dark:text-gray-300 text-sm mb-2">Gráfico Ganhos do Dia</span>
+                <canvas id="grafico-dia" height="120"></canvas>
+            </div>
+            <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow flex flex-col">
+                <span class="text-gray-900 dark:text-gray-300 text-sm mb-2">Gráfico Ganhos do Mês</span>
+                <canvas id="grafico-mes" height="120"></canvas>
             </div>
         </div>
     </main>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebarToggle');
@@ -150,6 +157,49 @@
         } else {
             sidebar.classList.add('-translate-x-full');
             sidebarToggle.classList.remove('hidden');
+        }
+    });
+
+    // Gráfico de ganhos do dia (exemplo: ganhos por hora)
+    const ctxDia = document.getElementById('grafico-dia').getContext('2d');
+    new Chart(ctxDia, {
+        type: 'line',
+        data: {
+            labels: ['08h', '10h', '12h', '14h', '16h', '18h', '20h'],
+            datasets: [{
+                label: 'Ganhos (R$)',
+                data: [30, 50, 80, 60, 90, 110, 70],
+                borderColor: '#2563eb',
+                backgroundColor: 'rgba(37,99,235,0.1)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // Gráfico de ganhos do mês (exemplo: ganhos por dia)
+    const ctxMes = document.getElementById('grafico-mes').getContext('2d');
+    new Chart(ctxMes, {
+        type: 'bar',
+        data: {
+            labels: ['1', '5', '10', '15', '20', '25', '30'],
+            datasets: [{
+                label: 'Ganhos (R$)',
+                data: [200, 350, 400, 300, 500, 600, 524],
+                backgroundColor: '#2563eb'
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true }
+            }
         }
     });
 </script>
