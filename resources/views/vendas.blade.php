@@ -64,6 +64,7 @@
                             <th class="py-2 px-2 font-bold text-cyan-400 text-base">Descrição</th>
                             <th class="py-2 px-2 font-bold text-cyan-400 text-base text-center w-32">Qtd</th>
                             <th class="py-2 px-2 font-bold text-cyan-400 text-base text-right">Subtotal</th>
+                            <th class="py-2 px-2 font-bold text-cyan-400 text-base text-center w-16">Ação</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,6 +83,13 @@
                                     </div>
                                 </td>
                                 <td class="py-2 px-2 text-right font-bold text-cyan-400 subtotal">{{ number_format($item['subtotal'] ?? $item->subtotal ?? 0, 2, ',', '.') }}</td>
+                                <td class="py-2 px-2 text-center align-middle">
+                                    <button type="button" class="remover-produto bg-red-600 hover:bg-red-800 text-white rounded-full w-8 h-8 flex items-center justify-center" title="Remover produto">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -199,6 +207,13 @@ resultsList.addEventListener('click', function(e) {
             </div>
         </td>
         <td class="py-2 px-2 text-right font-bold text-cyan-400 subtotal">${preco.replace('.', ',')}</td>
+        <td class="py-2 px-2 text-center align-middle">
+            <button type="button" class="remover-produto bg-red-600 hover:bg-red-800 text-white rounded-full w-8 h-8 flex items-center justify-center" title="Remover produto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </td>
     `;
     carrinhoTable.appendChild(newRow);
 
@@ -213,6 +228,15 @@ resultsList.addEventListener('click', function(e) {
 document.addEventListener('click', function(e) {
     if (!searchInput.contains(e.target) && !resultsList.contains(e.target)) {
         resultsList.classList.add('hidden');
+    }
+});
+
+// Adiciona evento para remover produto do carrinho
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.remover-produto')) {
+        const row = e.target.closest('tr');
+        row.remove();
+        atualizarTotal();
     }
 });
 </script>
@@ -285,25 +309,62 @@ function startQuagga() {
         let code = result.codeResult.code;
         document.getElementById('barcode-result').textContent = code;
 
-        fetch("/buscar-produto", {
+        fetch("/buscar-no-estoque", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRF-TOKEN": '{{ csrf_token() }}'
             },
-            body: JSON.stringify({ codigo: code })
+            body: JSON.stringify({ codigo_barras: code })
         })
         .then(res => res.json())
         .then(data => {
             if (data.erro) {
                 document.getElementById("product-info").innerHTML = `<p class="text-red-500">${data.erro}</p>`;
             } else {
-                document.getElementById("product-info").innerHTML = `
-                    <p><strong>Nome:</strong> ${data.nome}</p>
-                    <p><strong>Marca:</strong> ${data.marca}</p>
-                    <p><strong>Descrição:</strong> ${data.descricao}</p>
-                    ${data.imagem ? `<img src="${data.imagem}" class="mx-auto mt-2 rounded shadow" width="100">` : ''}
-                `;
+                // Adiciona ao carrinho (tabela)
+                const carrinhoTable = document.querySelector('table tbody');
+                // Verifica se já existe o produto no carrinho
+                let row = Array.from(carrinhoTable.children).find(tr =>
+                    tr.querySelector('td') && tr.querySelector('td').textContent.trim() == data.id
+                );
+                if (row) {
+                    // Se já existe, incrementa a quantidade
+                    const qtdSpan = row.querySelector('.qtd');
+                    let qtd = parseInt(qtdSpan.textContent) + 1;
+                    qtdSpan.textContent = qtd;
+                    atualizarSubtotal(qtdSpan, qtd);
+                } else {
+                    // Se não existe, adiciona nova linha
+                    const newRow = document.createElement('tr');
+                    newRow.className = "border-b border-blue-900";
+                    newRow.setAttribute('data-preco', data.preco);
+                    newRow.innerHTML = `
+                        <td class="py-2 px-2 align-top font-bold text-blue-300">${data.id}</td>
+                        <td class="py-2 px-2">
+                            <div class="font-semibold text-blue-900 dark:text-white">${data.nome}</div>
+                            <div class="text-xs text-gray-400">${data.codigo_barras || ''}</div>
+                        </td>
+                        <td class="py-2 px-2 text-center align-middle">
+                            <div class="flex items-center justify-center gap-2">
+                                <button type="button" class="cursor-pointer bg-blue-800 text-white rounded-full w-8 h-8 text-2xl flex items-center justify-center" onclick="decrementQtd(this)">−</button>
+                                <span class="qtd text-lg font-bold w-8 text-center inline-block text-blue-900 dark:text-white">1</span>
+                                <button type="button" class="cursor-pointer bg-blue-800 text-white rounded-full w-8 h-8 text-2xl flex items-center justify-center" onclick="incrementQtd(this)">+</button>
+                            </div>
+                        </td>
+                        <td class="py-2 px-2 text-right font-bold text-cyan-400 subtotal">${parseFloat(data.preco).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                        <td class="py-2 px-2 text-center align-middle">
+                            <button type="button" class="remover-produto bg-red-600 hover:bg-red-800 text-white rounded-full w-8 h-8 flex items-center justify-center" title="Remover produto">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </td>
+                    `;
+                    carrinhoTable.appendChild(newRow);
+                }
+                atualizarTotal();
+                closeBarcodeModal();
             }
         })
         .catch(err => {
@@ -363,7 +424,7 @@ document.getElementById('confirm-btn').addEventListener('click', function() {
         body: JSON.stringify({ itens })
     })
     .then(res => res.json())
-    .then(data => {
+    .then data => {
         if (data.sucesso) {
             alert('Compra finalizada com sucesso!');
             window.location.reload();

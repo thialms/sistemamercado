@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('produtos', function (Blueprint $table) {
             $table->id(); // codigo de barras
             $table->unsignedBigInteger('loja_id');
-            $table->integer('codigo_barras')->unique();
+            $table->bigInteger('codigo_barras')->unique();
             $table->string('nome')->unique();
             $table->string('marca');
             $table->double('preco_venda');

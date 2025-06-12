@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\EstoqueController;
 use App\Http\Controllers\VendaController;
+use App\Http\Controllers\CartController;
 
 Route::get('/home', function () {
     if (!session('logado')) {
@@ -18,7 +19,10 @@ Route::get('/vendas', function () {
     if (!session('logado')) {
         return redirect()->route('login');
     }
-    $itens = []; // Adicione esta linha
+    // Executa a lógica de inicialização do carrinho do CartController
+    app(CartController::class)->telaVenda();
+
+    $itens = []; // Ou carregue os itens do carrinho se desejar
     return view('vendas', compact('itens'));
 })->name('vendas');
 
@@ -44,3 +48,4 @@ Route::post('/estoque/adicionar-produto', [EstoqueController::class, 'adicionarP
 Route::put('/produtos/{produto}', [EstoqueController::class, 'update'])->name('produtos.update');
 Route::get('/produtos/busca-rapida', [ProdutoController::class, 'buscaRapida']);
 Route::post('/finalizar-compra', [VendaController::class, 'finalizarCompra']);
+Route::post('/buscar-no-estoque', [ProdutoController::class, 'buscarNoEstoque']);
