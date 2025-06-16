@@ -296,8 +296,8 @@ function startQuagga() {
             target: document.querySelector('#interactive'),
             constraints: {
                 facingMode: "environment",
-                width: 640,
-                height: 480
+                width: 720,
+                height: 1281
             }
         },
         decoder: {
